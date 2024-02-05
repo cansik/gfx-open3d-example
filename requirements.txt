@@ -1,0 +1,8 @@
+pygfx~=0.1.17
+open3d~=0.18.0
+trimesh~=4.1.2
+
+glfw~=2.6.5
+
+imageio~=2.33.1
+numpy
