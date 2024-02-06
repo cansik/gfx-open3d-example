@@ -48,7 +48,6 @@ def load_from_open3d(path: str) -> LoaderResult:
     vertices = np.array(o3d_mesh.vertices, dtype=np.float32)
 
     triangle_uvs_wgpu = (triangle_uvs * np.array([1, -1]) + np.array([0, 1])).astype(np.float32)  # uv.y = 1 - uv.y
-    triangle_uvs_wgpu = triangle_uvs_wgpu[::3]
 
     gfx_geometry = gfx.Geometry(indices=triangles, positions=vertices,
                                 normals=vertex_normals, texcoords=triangle_uvs_wgpu)
@@ -87,6 +86,9 @@ def main():
 
     t_mesh = create_mesh(object_path, load_from_trimesh)
     t_mesh.world.x -= 200
+
+    print(t_mesh.geometry.texcoords.data.shape)
+    print(o3d_mesh.geometry.texcoords.data.shape)
 
     # setup 3d scene
     canvas = WgpuCanvas()
