@@ -47,10 +47,13 @@ def load_from_open3d(path: str) -> LoaderResult:
     vertex_colors = np.array(o3d_mesh.vertex_colors, dtype=np.float32)
     vertices = np.array(o3d_mesh.vertices, dtype=np.float32)
 
-    triangle_uvs_wgpu = (triangle_uvs * np.array([1, -1]) + np.array([0, 1])).astype(np.float32)  # uv.y = 1 - uv.y
+    vertex_uvs = np.zeros((len(vertices), 2), np.float32)
+    vertex_uvs[triangles.flat] = triangle_uvs
+
+    vertex_uvs_wgpu = (vertex_uvs * np.array([1, -1]) + np.array([0, 1])).astype(np.float32)  # uv.y = 1 - uv.y
 
     gfx_geometry = gfx.Geometry(indices=triangles, positions=vertices,
-                                normals=vertex_normals, texcoords=triangle_uvs_wgpu)
+                                normals=vertex_normals, texcoords=vertex_uvs_wgpu)
 
     # create material
     gfx_material = gfx.MeshBasicMaterial()
